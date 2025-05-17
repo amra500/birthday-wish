@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🎉 Happy Birthday Rida!</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #fff0f5, #ffe6e6);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 3em;
+      color: #e60073;
+      margin: 20px;
+      animation: fadeIn 2s ease-out;
+      z-index: 2;
+    }
+
+    .cake {
+      position: relative;
+      animation: riseUp 2s ease-in-out;
+      margin-top: 20px;
+      z-index: 2;
+    }
+
+    .layer {
+      background: #ff99cc;
+      border-radius: 20px;
+      border: 4px solid #fff;
+      margin: 5px auto;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+
+    .layer1 { width: 240px; height: 60px; }
+    .layer2 { width: 180px; height: 50px; }
+    .layer3 { width: 120px; height: 40px; }
+
+    .candles {
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+    }
+
+    .candle {
+      width: 10px;
+      height: 40px;
+      background: #fff;
+      border-radius: 3px;
+      position: relative;
+    }
+
+    .flame {
+      width: 12px;
+      height: 18px;
+      background: radial-gradient(ellipse at center, #ffff66 0%, #ff9900 60%, transparent 80%);
+      border-radius: 50%;
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: flicker 0.3s infinite alternate;
+    }
+
+    .message {
+      font-size: 1.5em;
+      text-align: center;
+      color: #cc0066;
+      margin-top: 40px;
+      animation: fadeInUp 3s ease-in-out;
+      max-width: 600px;
+      z-index: 2;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes flicker {
+      0% { transform: translateX(-50%) scale(1); opacity: 0.8; }
+      100% { transform: translateX(-50%) scale(1.2); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes riseUp {
+      from { transform: translateY(100px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="confetti"></canvas>
+
+  <h1>🎂 Happy Birthday Rida! 🎉</h1>
+
+  <div class="cake">
+    <div class="candles">
+      <div class="candle"><div class="flame"></div></div>
+      <div class="candle"><div class="flame"></div></div>
+      <div class="candle"><div class="flame"></div></div>
+    </div>
+    <div class="layer layer3"></div>
+    <div class="layer layer2"></div>
+    <div class="layer layer1"></div>
+  </div>
+
+  <div class="message">
+    Wishing you a day full of joy, love, and lots of wishes! May your year be as amazing as you are In Sha Allah! 🎈🎁
+  </div>
+
+  <script>
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+    let W = window.innerWidth;
+    let H = window.innerHeight;
+    canvas.width = W;
+    canvas.height = H;
+
+    const confetti = [];
+    const colors = ["#ff69b4", "#ffcc00", "#66ff66", "#00ccff", "#ff6666"];
+
+    for (let i = 0; i < 150; i++) {
+      confetti.push({
+        x: Math.random() * W,
+        y: Math.random() * H - H,
+        r: Math.random() * 6 + 4,
+        d: Math.random() * 10 + 2,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        tilt: Math.random() * 10 - 5,
+        tiltAngle: 0,
+        tiltAngleIncremental: (Math.random() * 0.07) + 0.05
+      });
+    }
+
+    function drawConfetti() {
+      ctx.clearRect(0, 0, W, H);
+      confetti.forEach(c => {
+        ctx.beginPath();
+        ctx.lineWidth = c.r;
+        ctx.strokeStyle = c.color;
+        ctx.moveTo(c.x + c.tilt + c.r / 2, c.y);
+        ctx.lineTo(c.x + c.tilt, c.y + c.tilt + c.r / 2);
+        ctx.stroke();
+      });
+      updateConfetti();
+    }
+
+    function updateConfetti() {
+      confetti.forEach(c => {
+        c.tiltAngle += c.tiltAngleIncremental;
+        c.y += (Math.cos(c.d) + 1 + c.r / 2) / 2;
+        c.x += Math.sin(c.d);
+        c.tilt = Math.sin(c.tiltAngle) * 15;
+
+        if (c.y > H) {
+          c.y = -10;
+          c.x = Math.random() * W;
+        }
+      });
+    }
+
+    setInterval(drawConfetti, 33);
+
+    window.addEventListener('resize', () => {
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width = W;
+      canvas.height = H;
+    });
+  </script>
+
+</body>
+</html>
